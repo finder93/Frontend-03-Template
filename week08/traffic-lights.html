@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>&#x1F6A5;</title>
+        <style>
+            div {
+                background-color: grey;
+                display: inline-block;
+                margin: 30px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50px;
+            }
+            .green.light {
+                background-color: green;
+            }
+            .yellow.light {
+                background-color: yellow;
+            }
+            .red.light {
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="green"></div>
+        <div class="yellow"></div>
+        <div class="red"></div>
+        <button id="next">next</button>
+    </body>
+    <script>
+        function green() {
+            let lights = document.getElementsByTagName("div");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("light");
+            }
+            document.getElementsByClassName("green")[0].classList.add("light");
+        }
+        function red() {
+            let lights = document.getElementsByTagName("div");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("light");
+            }
+            document.getElementsByClassName("red")[0].classList.add("light");
+        }
+        function yellow() {
+            let lights = document.getElementsByTagName("div");
+            for (let i = 0; i < 3; i++) {
+                lights[i].classList.remove("light");
+            }
+            document.getElementsByClassName("yellow")[0].classList.add("light");
+        }
+
+        // ----------------------------------------
+        // 回调
+        // function go() {
+        //     green();
+        //     setTimeout(() => {
+        //         yellow();
+        //         setTimeout(() => {
+        //             red();
+        //             setTimeout(() => {
+        //                 go();
+        //             }, 500);
+        //         }, 200);
+        //     }, 1000);
+        // }
+
+        // ----------------------------------------
+        function sleep(t) {
+            return new Promise((resolve, reject) => {
+                setTimeout(resolve, t);
+            });
+        }
+
+        function happen(element, eventName) {
+            return new Promise((resolve, reject) => {
+                element.addEventListener(eventName, resolve, { once: true });
+            });
+        }
+
+        // ----------------------------------------
+        // 利用Promise，链式
+        // function go() {
+        //     green();
+        //     sleep(1000)
+        //         .then(() => {
+        //             yellow();
+        //             return sleep(200);
+        //         })
+        //         .then(() => {
+        //             red();
+        //             return sleep(500);
+        //         })
+        //         .then(go);
+        // }
+
+        // async/await 语法
+        async function go() {
+            while (true) {
+                green();
+                await sleep(1000);
+                yellow();
+                await sleep(200);
+                red();
+                await sleep(500);
+            }
+        }
+
+        // 手动控制
+        // async function go() {
+        //     while (true) {
+        //         green();
+        //         await happen(document.getElementById("next"), "click");
+        //         yellow();
+        //         await happen(document.getElementById("next"), "click");
+        //         red();
+        //         await happen(document.getElementById("next"), "click");
+        //     }
+        // }
+
+        // ----------------------------------------
+        // 同步代码模拟异步
+        // function* go() {
+        //     while (true) {
+        //         green();
+        //         yield sleep(1000);
+        //         yellow();
+        //         yield sleep(200);
+        //         red();
+        //         yield sleep(500);
+        //     }
+        // }
+        // function run(iterator) {
+        //     let { value, done } = iterator.next();
+        //     if (done) return;
+        //     if (value instanceof Promise) {
+        //         value.then(() => {
+        //             run(iterator);
+        //         });
+        //     }
+        // }
+        // function co(generator) {
+        //     return function () {
+        //         return run(generator());
+        //     };
+        // }
+        // go = co(go);
+
+        go();
+
+        // ----------------------------------------
+        // for await of 用法
+        // function sleep(t) {
+        //     return new Promise((resolve, reject) => {
+        //         setTimeout(resolve, t);
+        //     });
+        // }
+
+        // async function* counter() {
+        //     let i = 0;
+        //     while (true) {
+        //         await sleep(1000);
+        //         yield i++;
+        //     }
+        // }
+
+        // (async function () {
+        //     for await (let v of counter()) {
+        //         console.log(v);
+        //     }
+        // })();
+    </script>
+</html>
