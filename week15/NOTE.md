@@ -287,3 +287,20 @@
             -   Recognizer，负责事件处理
             -   Dispatcher，负责派发真正的事件
         -   调用形式可以是这样，对需要做手势处理的元素绑定即可
+            -   ```js
+                class Listener {
+                    // ...
+                }
+                class Recognizer {
+                    // ...
+                }
+                class Dispatcher {
+                    // ...
+                }
+                export function enableGesture(element) {
+                    new Listener(
+                        element,
+                        new Recognizer(new Dispatcher(element))
+                    );
+                }
+                ```
