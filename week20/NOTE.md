@@ -1,1 +1,24 @@
 学习笔记
+
+-   持续集成
+    -   发布前检查相关知识
+        -   daily build，通过服务端的代码实现每天一次全局 Build
+        -   BVT（Build Verification Test）构建的验证测试，一种冒烟测试，发生在 build 完成之后，正式测试完成之前。
+        -   前端领域的持续集成
+            -   前端的 build 耗时短，可以比 daily build 更频繁
+            -   前端需要考虑 BVT 的成本
+            -   采用更轻量的检查方式，例如 lint 和无头浏览器
+    -   Git Hooks
+        -   Git 能在特定的重要动作发生时，触发自定义脚本 Git Hooks，类似 vue 生命周期中的钩子函数，Webapck 的插件机制。
+        -   Git Hooks 包括客户端 hook 和服务端 hook
+        -   在./git/hooks 目录下所有的 hooks，都是.sample 结尾，表示不执行，去掉.sample 后缀既可执行。
+        -   脚本文件可以指定执行脚本的环境`#!/usr/bin/env node`
+        -   有了 pre-commit hook 就可以在提交代码前进行检查，结合 eslint 提供的 Node.js 的 api，可以在 hook 脚本里设置当代码检查不通过就阻止提交
+        -   边界情况`git stash push -k`和`git stash pop`
+    -   ESLint
+        -   代码风格检查
+        -   注意`new ESLint({ fix: false })`
+    -   使用无头浏览器检查 DOM
+        -   如果需要检查 DOM，需要引入浏览器环境，如 phantom.js、puppeteer 等无头浏览器，即没有界面的浏览器。
+        -   chrome 提供 headless，命令行模式
+        -   puppeteer 可以很好的替代 phantom.js 和命令行模式
